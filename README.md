@@ -15,13 +15,15 @@ For fron-end project Client folder has all code. I have used below technology to
 To start the front end proejct please follow below step.
    1. Go inside the client folder.
    2. run npm install from terminal
-   3. run npm start   from terminal
-  
+   3. run npm start   from terminal  
 The application will start on port 3000
 
-The back-end system is build in Java with spring-boot, data JPA and spring security. The database I used is mysql on AWS RDS. 
+The back-end system is build below tech stack
+    1. Java
+    2. spring-boot and data JPA, spring security.
+    3. Mysql on AWS RDS.
+    4. JWT    
 The database is up and running all the time on AWS.
-
 To start backend server Please follow below step
    1. Go inside server/task folder
    2. run mvn spring-boot:run
