@@ -20,3 +20,18 @@ To start backend server Please follow below step
    1. Go inside server/task folder
    2. run mvn spring-boot:run
 The server will start on port 5000.
+
+The back-end app has mainly 2 Entity User and Task. User entity is coupled with spring security and JWT for tokens and authentication. It includes below endpoints.
+    
+   For Signup:- http://localhost:5000/api/auth/signup :- Register new user
+   For signIn:- http://localhost:5000/api/auth/signin :- Login for user
+   For New Task:- http://localhost:5000/api/tasks    :- Creates new task
+   For User Tasks:- http://localhost:5000/api/users/{username}/userTasks :- get all task assigned to this username
+   
+   Below are the core tables in the database
+   
+   Role:- all roles
+   users:- all users
+   task_template:- template to form a task
+   tasks:- all tasks
+   task_users:- list of all users assigned for each task
