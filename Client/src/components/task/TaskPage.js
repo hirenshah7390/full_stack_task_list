@@ -16,7 +16,7 @@ class TaskPage extends React.Component {
     browserHistory.push('/task');
   }
 
-  render() {
+  render() {    
     const {tasks} = this.props;
     return (
       <div>

@@ -1,21 +1,21 @@
 import * as types from '../actions/actionTypes';
 import  initialState from './initialState';
 
-export default function userReducer(state= initialState.users, action){
-  switch(action.type){
+export default function userReducer(state= initialState.tasks, action){
+    switch(action.type){
     case types.LOAD_USERS_SUCCESS:
-      return action.users;
+      return action.tasks;
 
     case types.CREATE_USER_SUCCESS:        
       return[
         ...state,
-        Object.assign({},action.user)
+        Object.assign({},action.task)
       ];
 
     case types.UPDATE_USER_SUCCESS:
       return[
-        ...state.filter(user => user.user_ID !== action.user.user_ID),
-        Object.assign({},action.user)
+        ...state.filter(task => task.id !== action.task.id),
+        Object.assign({},action.task)
       ];
 
     default:

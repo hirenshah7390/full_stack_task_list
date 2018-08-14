@@ -26,7 +26,7 @@ class ManageTaskPage extends React.Component {
     }   
   }
 
-  updateUserState(event) {    
+  updateTaskState(event) {    
     const field = event.target.name;
     let task = Object.assign({}, this.state.task); //maintain immutability     
         
@@ -93,25 +93,17 @@ ManageTaskPage.contextTypes = {
  }
 
 function mapStateToProps(state, ownProps) {
-  const id = ownProps.params.user_ID; //from the path '/user/:userId
+  const id = ownProps.params.id; //from the path '/user/:userId
   let task = 
    {
      id: 0, 
      title: '',
-     taskStatus:'',      
-     users: []
+     taskStatus:''
     };
 
  if(id && state.tasks.length > 0){
     task = getTaskById(state.tasks, parseInt(id)); //comes as string from url so parsing. We can use regex in react-router v4 in future
-     }
-
-  const usersCheckboxList = state.users.map(user =>{
-    return {
-       value: user.id,
-       label: user.name
-    };
-  });
+     } 
 
   return {
     task: task    

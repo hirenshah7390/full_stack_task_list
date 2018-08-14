@@ -8,11 +8,9 @@ import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 const request = (options) => {
   const headers = new Headers({
       'Content-Type': 'application/json',
-  });
-  
+  });  
  
-  headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
-  
+  headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);  
 
   const defaults = {headers: headers};
   options = Object.assign({}, defaults, options);  
@@ -27,39 +25,39 @@ const request = (options) => {
   );
 };
 
-export function loadUsersSuccess(users) {
-  return {type: types.LOAD_USERS_SUCCESS, users};
+export function loadUsersSuccess(tasks) {
+  return {type: types.LOAD_USERS_SUCCESS, tasks};
 }
 
-export function createUserSuccess(user) {  
-  return {type: types.CREATE_USER_SUCCESS, user};
+export function createUserSuccess(task) {  
+  return {type: types.CREATE_USER_SUCCESS, task};
 }
 
-export function updateUserSuccess(user) {
-  return {type: types.UPDATE_USER_SUCCESS, user};
+export function updateUserSuccess(task) {
+  return {type: types.UPDATE_USER_SUCCESS, task};
 }
 
 export function loadUsers(page, size) { 
 
     page = page || 0;
     size = size || POLL_LIST_SIZE;
-    
+
   return function (dispatch) {
     dispatch(beginAjaxCall());
     return request({
       url: API_BASE_URL + "/users/test/userTasks?page=" + page + "&size=" + size,
       method: 'GET'
      })
-      .then(response => {
-        debugger;                 
+      .then(response => {                      
           const result = response.content.map(task => {
               return Object.assign({},
                 {
                   id : task.id,
                   title : task.title,                  
-                  users : task.users                
+                  taskStatus : task.taskStatus                
               });
           }); 
+          
           dispatch(loadUsersSuccess(result));       
       }).catch(error => {
         toastr.error('Upss.. Temporarily unavailable');

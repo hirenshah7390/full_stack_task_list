@@ -15,7 +15,7 @@ const TaskForm = ({task, onSave, onChange, errors, loading}) => {
       <div className="jumbotron">
         <TextInput
           name={"title"}
-          label={"title"}
+          label={"Title"}
           type={"text"}
           value={task.title}
           onChange={onChange}
@@ -23,7 +23,7 @@ const TaskForm = ({task, onSave, onChange, errors, loading}) => {
 
         <TextInput
           name={"taskStatus"}
-          label={"taskStatus"}
+          label={"Task Status"}
           type={"text"}
           value={task.taskStatus}
           onChange={onChange}

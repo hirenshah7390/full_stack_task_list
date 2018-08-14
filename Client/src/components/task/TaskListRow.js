@@ -1,19 +1,17 @@
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 
-const UserListRow = ({user}) => {
+const TaskListRow = ({task}) => {
   return (
     <tr>
-      <td><Link to={'/user/' + user.user_ID}>{user.first_name}</Link></td>
-      <td>{user.last_name}</td>
-      <td>{user.email}</td>
-      <td>{user.sso}</td>
+      <td><Link to={'/user/' + task.id}>{task.title}</Link></td>
+      <td>{task.taskStatus}</td>      
     </tr>
   );
 };
 
-UserListRow.propTypes = {
-  user: PropTypes.object.isRequired
+TaskListRow.propTypes = {
+  task: PropTypes.object.isRequired
 };
 
-export default UserListRow;
+export default TaskListRow;

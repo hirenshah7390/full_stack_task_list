@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-const TaskList = ({tasks}) => {
+const TaskList = ({tasks}) => {    
   return (
     <ReactTable
       data={tasks}
@@ -16,12 +16,12 @@ const TaskList = ({tasks}) => {
         {
           Header: "Title",
           accessor: "title",
-          Cell: cellInfo => (<Link to={'/user/' + cellInfo.row.user_ID}>{cellInfo.row.last_name}</Link>) // Custom cell components!
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.title}</Link>) // Custom cell components!
         },
         {
           Header: "Status",
           accessor: "taskStatus",
-          Cell: cellInfo => (<Link to={'/user/' + cellInfo.row.user_ID}>{cellInfo.row.first_name}</Link>) // Custom cell components!
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskStatus}</Link>) // Custom cell components!
         }
       ]}
       defaultSorted={[

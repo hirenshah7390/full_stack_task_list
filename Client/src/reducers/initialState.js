@@ -1,11 +1,4 @@
 export default {
-  users: [],
-  titles: [],
-  orsFunctions: [] ,
-  degrees: [],
-  positions: [],
-  departments: [],
-  units: [],
-  institutions: [],
+  tasks: [],
   ajaxCallInProgress: 0
 };
