@@ -54,7 +54,10 @@ public class Task extends UserDateAudit{
     private Set<User> users = new HashSet<>();
 
     @NotNull
-    private Instant timeEstimatedFinish;
+    private int timeEstimated;
+
+    @NotNull
+    private Instant dueDate;
 
     private boolean isRecurring;
 
@@ -119,11 +122,11 @@ public class Task extends UserDateAudit{
     }
 
     public Instant getTimeEstimatedFinish() {
-        return timeEstimatedFinish;
+        return dueDate;
     }
 
     public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
-        this.timeEstimatedFinish = timeEstimatedFinish;
+        this.dueDate = timeEstimatedFinish;
     }
 
     public boolean getIsRecurring() {
@@ -157,6 +160,10 @@ public class Task extends UserDateAudit{
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public int getTimeEstimated(){return timeEstimated;}
+
+    public void setTimeEstimated(int timeEstimated) {this.timeEstimated = timeEstimated;}
 
 
 }

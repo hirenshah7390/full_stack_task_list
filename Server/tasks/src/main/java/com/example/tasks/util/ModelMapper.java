@@ -15,12 +15,12 @@ public class ModelMapper {
     public static TaskResponse mapTaskToTaskResponse(Task task) {
         TaskResponse TaskResponse = new TaskResponse();
         TaskResponse.setId(task.getId());
+        TaskResponse.setTitle(task.getTitle());
         TaskResponse.setCreationDateTime(task.getCreatedAt());
         TaskResponse.setTimeEstimatedFinish(task.getTimeEstimatedFinish());
         TaskResponse.setTaskStatus(task.getTaskStatus());
         TaskResponse.setTaskPriority(task.getTaskPriority());
         TaskResponse.setUsers(task.getUsers());
-
 
         return TaskResponse;
     }

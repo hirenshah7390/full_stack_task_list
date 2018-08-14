@@ -18,11 +18,12 @@ public class TaskResponse {
     private String note;
     private String feedback;
     private TaskPriority taskPriority;
-    private Instant timeEstimatedFinish;
+    private Instant dueDate;
     private UserSummary createdBy;
     private Instant creationDateTime;
     private TaskTemplate template;
     private Set<User> users;
+    private int timeEstimated;
 
     public Long getId() {
         return id;
@@ -97,11 +98,11 @@ public class TaskResponse {
     }
 
     public Instant getTimeEstimatedFinish() {
-        return timeEstimatedFinish;
+        return dueDate;
     }
 
     public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
-        this.timeEstimatedFinish = timeEstimatedFinish;
+        this.dueDate = timeEstimatedFinish;
     }
 
     public TaskTemplate getTaskTemplate() {
@@ -119,6 +120,10 @@ public class TaskResponse {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public int getTimeEstimated(){return timeEstimated;}
+
+    public void setTimeEstimated(int timeEstimated) {this.timeEstimated = timeEstimated;}
 
 
 

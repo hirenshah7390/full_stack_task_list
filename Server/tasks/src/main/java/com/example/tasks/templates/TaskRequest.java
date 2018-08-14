@@ -21,9 +21,10 @@ public class TaskRequest {
     private String note;
     private String feedback;
     private TaskPriority taskPriority;
-    private Instant timeEstimatedFinish;
+    private Instant dueDate;
     private TaskTemplate template;
     private Set<User> users;
+    private int timeEstimated;
 
     public String getTitle() {
         return title;
@@ -74,11 +75,11 @@ public class TaskRequest {
     }
 
     public Instant getTimeEstimatedFinish() {
-        return timeEstimatedFinish;
+        return dueDate;
     }
 
     public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
-        this.timeEstimatedFinish = timeEstimatedFinish;
+        this.dueDate = timeEstimatedFinish;
     }
 
     public TaskTemplate getTaskTemplate() {
@@ -96,6 +97,10 @@ public class TaskRequest {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public int getTimeEstimated(){return timeEstimated;}
+
+    public void setTimeEstimated(int timeEstimated) {this.timeEstimated = timeEstimated;}
 
 
 }

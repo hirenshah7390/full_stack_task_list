@@ -2,8 +2,7 @@ package com.example.tasks.model;
 
 public enum TaskStatus {
 
-    CREATED,
-    ASSIGNED,
+    PENDING,
     IN_PROGRESS,
     FINISHED;
 

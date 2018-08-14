@@ -72,7 +72,7 @@ public class TaskService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-        // Retrieve all pollIds in which the given username has voted
+
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Long> usertaskIds = taskRepository.taskIdsByUserId(currentUser.getId(), pageable);
 
@@ -82,7 +82,7 @@ public class TaskService {
                     usertaskIds.getTotalPages(), usertaskIds.isLast());
         }
 
-        // Retrieve all poll details from the voted pollIds.
+
         List<Long> taskIds = usertaskIds.getContent();
 
         Sort sort = new Sort(Sort.Direction.DESC, "createdAt");
