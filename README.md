@@ -1,6 +1,8 @@
 # full_stack_task_list
 Task management System
-The application has 2 isolated projects for front and back-end.The application is not entirely complete. The main focus was to build  well architecture and then add functionalities.
+The application has 2 isolated projects for front and back-end.The application is not entirely complete. 
+
+The main focus was to build  well architecture and then add functionalities.
 
 For fron-end project Client folder has all code. I have used below technology to build front-end:
 
