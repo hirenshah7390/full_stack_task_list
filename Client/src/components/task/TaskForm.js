@@ -27,7 +27,7 @@ const TaskForm = ({task, onSave, onChange, errors, loading}) => {
           type={"text"}
           value={task.taskStatus}
           onChange={onChange}
-          error={errors.last_name}/>      
+          error={errors.last_name}/>     
          
         
         <input
