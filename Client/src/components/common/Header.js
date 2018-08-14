@@ -7,7 +7,7 @@ const Header = ({loading}) => {
     <nav>
       {/*<IndexLink to={"/"} activeClassName={"active"}>Home</IndexLink>
       {"|"} */}
-      <Link to={"/Users"} activeClassName={"active"}>Users</Link>
+      <Link to={"/Tasks"} activeClassName={"active"}>Tasks</Link>
       {"|"}
       <Link to={"/about"} activeClassName={"active"}>About</Link>
       {loading && <LoadingDots interval={500} dots={20}/>}

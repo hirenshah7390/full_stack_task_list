@@ -23,7 +23,7 @@ class TaskPage extends React.Component {
         <div className="form-group">
           <h3>Tasks</h3>
           <input type={"submit"}
-                 value={"Add User"}
+                 value={"Add Task"}
                  className={"btn btn-primary"}
                  onClick={this.redirectToAddTaskPage}/>
         </div>

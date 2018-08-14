@@ -10,13 +10,12 @@ const request = (options) => {
       'Content-Type': 'application/json',
   });
   
-  if(localStorage.getItem(ACCESS_TOKEN)) {
-      headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN));
-  }
+ 
+  headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
+  
 
   const defaults = {headers: headers};
-  options = Object.assign({}, defaults, options);
-  debugger;
+  options = Object.assign({}, defaults, options);  
   return fetch(options.url, options)
   .then(response => 
       response.json().then(json => {
@@ -44,6 +43,7 @@ export function loadUsers(page, size) {
 
     page = page || 0;
     size = size || POLL_LIST_SIZE;
+    
   return function (dispatch) {
     dispatch(beginAjaxCall());
     return request({
@@ -51,8 +51,8 @@ export function loadUsers(page, size) {
       method: 'GET'
      })
       .then(response => {
-        response.json().then(tasks => {          
-          const result = tasks.data.map(task => {
+        debugger;                 
+          const result = response.content.map(task => {
               return Object.assign({},
                 {
                   id : task.id,
@@ -60,8 +60,7 @@ export function loadUsers(page, size) {
                   users : task.users                
               });
           }); 
-          dispatch(loadUsersSuccess(result));
-        });
+          dispatch(loadUsersSuccess(result));       
       }).catch(error => {
         toastr.error('Upss.. Temporarily unavailable');
       });
