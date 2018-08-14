@@ -1,10 +1,10 @@
 import {combineReducers} from  'redux';
-import users from './userReducer';
+import tasks from './userReducer';
 import ajaxCallsInProgress from './ajaxStatusReducer';
 import {reducer as toastrReducer} from 'react-redux-toastr';
 
 const rootReducer = combineReducers({
-  users,
+  tasks,
   ajaxCallsInProgress,
   toastr: toastrReducer
 });

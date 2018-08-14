@@ -16,7 +16,7 @@ const request = (options) => {
 
   const defaults = {headers: headers};
   options = Object.assign({}, defaults, options);
-
+  debugger;
   return fetch(options.url, options)
   .then(response => 
       response.json().then(json => {

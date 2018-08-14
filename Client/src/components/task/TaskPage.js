@@ -25,7 +25,7 @@ class TaskPage extends React.Component {
           <input type={"submit"}
                  value={"Add User"}
                  className={"btn btn-primary"}
-                 onClick={this.redirectToAddUserPage}/>
+                 onClick={this.redirectToAddTaskPage}/>
         </div>
         <TaskList tasks={tasks}/>
       </div>

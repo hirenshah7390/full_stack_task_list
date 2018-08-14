@@ -4,7 +4,7 @@ import SelectInput from '../common/SelectInput';
 import {Checkbox} from 'react-bootstrap';
 import CheckboxList from '../common/Chkboxlist';
 
-const TaskForm = ({task, onSave, onChange, loading, errors}) => {
+const TaskForm = ({task, onSave, onChange, errors, loading}) => {
   let genders = []; 
   genders.push({ value : 1, text : 'M'});
   genders.push({ value : 2, text : 'F'});
@@ -43,7 +43,9 @@ const TaskForm = ({task, onSave, onChange, loading, errors}) => {
 
 
 TaskForm.propTypes = {
-  user: React.PropTypes.object.isRequired,  
+  task: React.PropTypes.object.isRequired, 
+  onSave: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired, 
   loading: React.PropTypes.bool,
   errors: React.PropTypes.object
 };

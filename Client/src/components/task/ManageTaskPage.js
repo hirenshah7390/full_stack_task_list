@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../actions/userActions';
-import UserForm from './TaskForm';
+import TaskForm from './TaskForm';
 
 class ManageTaskPage extends React.Component {
   constructor(props, context) {    
