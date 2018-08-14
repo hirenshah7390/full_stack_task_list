@@ -54,7 +54,8 @@ export function loadUsers(page, size) {
                 {
                   id : task.id,
                   title : task.title,                  
-                  taskStatus : task.taskStatus                
+                  taskStatus : task.taskStatus,
+                  timeEstimatedFinish : task.timeEstimatedFinish                
               });
           }); 
           
