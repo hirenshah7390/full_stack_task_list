@@ -2,7 +2,8 @@
 Task management System
 The application has 2 isolated projects for front and back-end.
 
-For fron-end project Client folder has all code. I have used below technology to build front-end
+For fron-end project Client folder has all code. I have used below technology to build front-end:
+
 React-redux and npm with javascript ES-6
 
 To start the front end proejct please follow below step.
