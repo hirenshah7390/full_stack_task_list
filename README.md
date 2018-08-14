@@ -6,7 +6,11 @@ The main focus was to build  well architecture and then add functionalities.
 
 For fron-end project Client folder has all code. I have used below technology to build front-end:
 
-React-redux and npm with javascript ES-6
+      1. React-redux and npm 
+      2. javascript ES-6
+      3. babel tranpiling
+      4. webpack
+      5. eslint
 
 To start the front end proejct please follow below step.
    1. Go inside the client folder.
