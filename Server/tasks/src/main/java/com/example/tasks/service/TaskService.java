@@ -23,10 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -75,7 +72,7 @@ public class TaskService {
 
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-        Page<Long> usertaskIds = taskRepository.taskIdsByUserId(currentUser.getId(), pageable);
+        Page<Long> usertaskIds = taskRepository.taskIdsByUserId(user.getId(), pageable);
 
         if (usertaskIds.getNumberOfElements() == 0) {
             return new PagedResponse<>(Collections.emptyList(), usertaskIds.getNumber(),
@@ -83,11 +80,11 @@ public class TaskService {
                     usertaskIds.getTotalPages(), usertaskIds.isLast());
         }
 
-
         List<Long> taskIds = usertaskIds.getContent();
 
         Sort sort = new Sort(Sort.Direction.DESC, "createdAt");
         List<Task> tasks = taskRepository.findByIdIn(taskIds, sort);
+        tasks.sort(Comparator.comparing(Task::getTaskStatus));
         tasks = sortTaskByRank(tasks);
 
         List<TaskResponse> taskResponses = tasks.stream().map(task -> ModelMapper.mapTaskToTaskResponse(task)).collect(Collectors.toList());
