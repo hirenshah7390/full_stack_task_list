@@ -45,17 +45,19 @@ export function loadUsers(page, size) {
   return function (dispatch) {
     dispatch(beginAjaxCall());
     return request({
-      url: API_BASE_URL + "/users/test/userTasks?page=" + page + "&size=" + size,
+      url: API_BASE_URL + "/users/hirentest/userTasks?page=" + page + "&size=" + size,
       method: 'GET'
      })
-      .then(response => {                      
+      .then(response => {  
+        debugger;                    
           const result = response.content.map(task => {
               return Object.assign({},
                 {
                   id : task.id,
                   title : task.title,                  
                   taskStatus : task.taskStatus,
-                  timeEstimatedFinish : task.timeEstimatedFinish                
+                  taskPriority : task.taskPriority,
+                  dueDate : task.dueDate             
               });
           }); 
           

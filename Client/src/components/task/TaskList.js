@@ -24,9 +24,14 @@ const TaskList = ({tasks}) => {
           Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskStatus}</Link>) // Custom cell components!
         },
         {
+          Header: "Priority",
+          accessor: "taskPriority",
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskPriority}</Link>) // Custom cell components!
+        },
+        {
           Header: "Due at",
-          accessor: "timeEstimatedFinish",
-          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.timeEstimatedFinish}</Link>) // Custom cell components!
+          accessor: "dueDate",
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.dueDate}</Link>) // Custom cell components!
         }
       ]}
       defaultSorted={[
