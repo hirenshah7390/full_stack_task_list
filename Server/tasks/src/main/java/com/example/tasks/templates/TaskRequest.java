@@ -74,11 +74,11 @@ public class TaskRequest {
         this.taskPriority = taskPriority;
     }
 
-    public Instant getTimeEstimatedFinish() {
+    public Instant getDueDate() {
         return dueDate;
     }
 
-    public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
+    public void setDueDate(Instant timeEstimatedFinish) {
         this.dueDate = timeEstimatedFinish;
     }
 

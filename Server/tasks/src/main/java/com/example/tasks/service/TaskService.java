@@ -12,6 +12,7 @@ import com.example.tasks.repository.UserRepository;
 import com.example.tasks.security.UserPrincipal;
 import com.example.tasks.util.AppConstants;
 import com.example.tasks.util.ModelMapper;
+import com.example.tasks.util.SortByRank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +88,10 @@ public class TaskService {
 
         Sort sort = new Sort(Sort.Direction.DESC, "createdAt");
         List<Task> tasks = taskRepository.findByIdIn(taskIds, sort);
+        tasks = sortTaskByRank(tasks);
 
         List<TaskResponse> taskResponses = tasks.stream().map(task -> ModelMapper.mapTaskToTaskResponse(task)).collect(Collectors.toList());
+
 
         return new PagedResponse<>(taskResponses, usertaskIds.getNumber(), usertaskIds.getSize(), usertaskIds.getTotalElements(), usertaskIds.getTotalPages(), usertaskIds.isLast());
     }
@@ -109,16 +112,16 @@ public class TaskService {
         Task task = new Task();
 
         Instant now = Instant.now();
-        Instant timeEstimatedFinish = taskRequest.getTimeEstimatedFinish();
-        task.setTimeEstimatedFinish(timeEstimatedFinish);
+        Instant timeEstimatedFinish = taskRequest.getDueDate();
+        task.setDueDate(timeEstimatedFinish);
         String title = taskRequest.getTitle();
         task.setTitle(title);
         TaskStatus status = taskRequest.getTaskStatus();
         task.setTaskStatus(status);
         TaskPriority priority = taskRequest.getTaskPriority();
         task.setTaskPriority(priority);
-        Instant timeToFinish = taskRequest.getTimeEstimatedFinish();
-        task.setTimeEstimatedFinish(timeToFinish);
+        int timeToFinish = taskRequest.getTimeEstimated();
+        task.setTimeEstimated(timeToFinish);
         Set<User> users = taskRequest.getUsers();
         task.setUsers(users);
 
@@ -137,5 +140,9 @@ public class TaskService {
         }
     }
 
+    public List<Task> sortTaskByRank(List<Task> tasks) {
+        tasks.sort(new SortByRank());
+        return tasks;
+    }
 
 }

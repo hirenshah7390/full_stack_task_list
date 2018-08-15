@@ -17,7 +17,7 @@ public class ModelMapper {
         TaskResponse.setId(task.getId());
         TaskResponse.setTitle(task.getTitle());
         TaskResponse.setCreationDateTime(task.getCreatedAt());
-        TaskResponse.setTimeEstimatedFinish(task.getTimeEstimatedFinish());
+        TaskResponse.setDueDate(task.getDueDate());
         TaskResponse.setTaskStatus(task.getTaskStatus());
         TaskResponse.setTaskPriority(task.getTaskPriority());
         TaskResponse.setUsers(task.getUsers());

@@ -97,12 +97,12 @@ public class TaskResponse {
         this.creationDateTime = creationDateTime;
     }
 
-    public Instant getTimeEstimatedFinish() {
+    public Instant getDueDate() {
         return dueDate;
     }
 
-    public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
-        this.dueDate = timeEstimatedFinish;
+    public void setDueDate(Instant dueDate) {
+        this.dueDate = dueDate;
     }
 
     public TaskTemplate getTaskTemplate() {
@@ -124,7 +124,5 @@ public class TaskResponse {
     public int getTimeEstimated(){return timeEstimated;}
 
     public void setTimeEstimated(int timeEstimated) {this.timeEstimated = timeEstimated;}
-
-
 
 }

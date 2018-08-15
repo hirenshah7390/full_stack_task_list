@@ -5,16 +5,7 @@ public enum TaskPriority {
     MEDIUM,
     HIGH;
 
-    public static TaskPriority lookup(String inputTaskPriorityString) {
-        for (TaskPriority priority : values()) {
-            if (priority.name().equals(inputTaskPriorityString.toUpperCase())) {
-                return priority;
-            }
-        }
-        return null;
-    }
-
-    public static int compareTwoPriorities(String p1String, String p2String) {
+    public static int comparePriorities(String p1String, String p2String) {
         if (p1String.equals(p2String)) {
             return 0;
         } else {

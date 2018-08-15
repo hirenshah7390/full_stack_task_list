@@ -121,12 +121,12 @@ public class Task extends UserDateAudit{
         this.taskPriority = taskPriority;
     }
 
-    public Instant getTimeEstimatedFinish() {
+    public Instant getDueDate() {
         return dueDate;
     }
 
-    public void setTimeEstimatedFinish(Instant timeEstimatedFinish) {
-        this.dueDate = timeEstimatedFinish;
+    public void setDueDate(Instant dueDate) {
+        this.dueDate = dueDate;
     }
 
     public boolean getIsRecurring() {
