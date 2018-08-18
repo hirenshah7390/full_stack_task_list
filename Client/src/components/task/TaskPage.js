@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import * as userActions from '../../actions/userActions';
+import * as userActions from '../../actions/taskActions';
 import {bindActionCreators} from 'redux';
 import TaskList from './TaskList';
 import {browserHistory} from 'react-router';

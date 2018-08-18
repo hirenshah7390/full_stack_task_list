@@ -1,220 +1,95 @@
-import * as types from './actionTypes';
-import fetch from 'node-fetch';
-import {toastr} from 'react-redux-toastr';
-import * as helper from '../utility/helper';
-import {beginAjaxCall} from './ajaxStatusActions';
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import { userConstants } from '../constants';
+import { userService } from '../_services/user_service';
+import { alertActions } from './alertActions';
+import { history } from '../utility';
 
-const request = (options) => {
-  const headers = new Headers({
-      'Content-Type': 'application/json',
-  });  
- 
-  headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);  
-
-  const defaults = {headers: headers};
-  options = Object.assign({}, defaults, options);  
-  return fetch(options.url, options)
-  .then(response => 
-      response.json().then(json => {
-          if(!response.ok) {
-              return Promise.reject(json);
-          }
-          return json;
-      })
-  );
+export const userActions = {
+    login,
+    logout,
+    register,
+    getAll,
+    delete: _delete
 };
 
-export function loadUsersSuccess(tasks) {
-  return {type: types.LOAD_USERS_SUCCESS, tasks};
-}
+function login(username, password) {
+    return dispatch => {
+        dispatch(request({ username }));
 
-export function createUserSuccess(task) {  
-  return {type: types.CREATE_USER_SUCCESS, task};
-}
-
-export function updateUserSuccess(task) {
-  return {type: types.UPDATE_USER_SUCCESS, task};
-}
-
-export function loadUsers(page, size) { 
-
-    page = page || 0;
-    size = size || POLL_LIST_SIZE;
-
-  return function (dispatch) {
-    dispatch(beginAjaxCall());
-    return request({
-      url: API_BASE_URL + "/users/hirentest/userTasks?page=" + page + "&size=" + size,
-      method: 'GET'
-     })
-      .then(response => {  
-        debugger;                    
-          const result = response.content.map(task => {
-              return Object.assign({},
-                {
-                  id : task.id,
-                  title : task.title,                  
-                  taskStatus : task.taskStatus,
-                  taskPriority : task.taskPriority,
-                  dueDate : task.dueDate             
-              });
-          }); 
-          
-          dispatch(loadUsersSuccess(result));       
-      }).catch(error => {
-        toastr.error('Upss.. Temporarily unavailable');
-      });
-  };
-}
-
-export function saveUser(user_ori) {
-let user = Object.assign({},
-    {
-      user_ID : user_ori.user_ID,
-      first_name: user_ori.first_name,
-      last_name: user_ori.last_name,
-      email: user_ori.email,
-     // dob: user_ori.dob,
-      sex: user_ori.sex == 1 ? 'M' : user_ori.sex == 2 ? 'F' : '',
-      SSO: user_ori.SSO,
-      title_ID: user_ori.title_ID , 
-      degree_ID: user_ori.degree_ID,  
-      position_ID: user_ori.position_ID,
-      department_ID: user_ori.department_ID,
-      au_ID: user_ori.au_ID,
-      institution_ID: user_ori.institution_ID 
-    });  
-  
- return function (dispatch, getState) {    
-   dispatch(beginAjaxCall());
-   if (user_ori.user_ID > 0) {
-    
-      let userFunctions = user_ori['user_functions'];     
-      //remove de-selected functions
-      return fetch('http://localhost:5000/ors/v1/user/function', {
-                      method: 'delete',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(userFunctions.filter(f => f.ors_function_ID === -1))
-                    })   
-    .then(response => response.json())
-    //Add selected Functions
-    .then(deleteFunctions => { 
-      return fetch('http://localhost:5000/ors/v1/user/function', {
-                    method: 'post',
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userFunctions.filter(f => f.user_function_ID === 0))
-                  })
-      .then(response => response.json())   
-      .then(savedFunctions => {
-     //save user   
-      return fetch('http://localhost:5000/ors/v1/user', {
-                      method: 'put',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(user)
-            })
-          .then(response => response.json())
-          .then(savedUser => { 
-           //create new user object         
-          let user = Object.assign({},
-            {
-              user_ID : savedUser.data.user_ID,
-              first_name: savedUser.data.first_name,
-              last_name: savedUser.data.last_name,
-              email: savedUser.data.email,
-             // dob: savedUser.dob,
-              sex: savedUser.data.sex == 'M' ? 1 : savedUser.data.sex  == 'F' ? 2 : 0,
-              SSO: savedUser.data.SSO,
-              title_ID: savedUser.data.title_ID,
-              degree_ID: savedUser.data.degree_ID,
-              position_ID: savedUser.data.position_ID,
-              department_ID: savedUser.data.department_ID,
-              au_ID: savedUser.data.au_ID,
-              institution_ID: savedUser.data.institution_ID,
-              user_functions: savedUser.data.user_functions,
-              functions: (savedUser.data.user_functions !== undefined) ? savedUser.data.user_functions.map(funct => {
-                return funct.ors_function.ors_function;
-              }).join(',') : []
-            });
-            
-            dispatch(updateUserSuccess(user)); //dispatch action
-            toastr.success('Success!!','The user detail is updated');
-            });
-          });
-        }).catch(error => {
-          throw(error);
-        });
-      }
-  else {
-        let newUser = {};       
-        //save users
-        return fetch('http://localhost:5000/ors/v1/users', {
-                      method: 'post',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(user)
-                    })
-        .then(response => response.json())
-        .then(savedUser => {
-              newUser = savedUser.data;
-              let userFunctions = user_ori['user_functions'];     
-              userFunctions = userFunctions.map(f => {
-                return {
-                  user_function_ID : 0,
-                  ors_function_ID : f.ors_function_ID,
-                  user_ID : newUser.user_ID
-                };
-              });
-              //save user functions
-              return fetch('http://localhost:5000/ors/v1/user/function', {
-                  method: 'post',
-                  headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(userFunctions)
-                })
-                .then(response => response.json())
-                .then(savedFunctions => { 
-                // create user new object 
-                let user = Object.assign({},
-                    {
-                      user_ID : newUser.user_ID,
-                      first_name: newUser.first_name,
-                      last_name: newUser.last_name,
-                      email: newUser.email,
-                   //   dob: newUser.dob,
-                      sex: newUser.sex == 'M' ? 1 : newUser.sex  == 'F' ? 2 : 0,
-                      SSO: newUser.SSO,
-                      title_ID: newUser.title_ID,
-                      degree_ID: newUser.degree_ID,
-                      position_ID: newUser.position_ID,
-                      department_ID: newUser.department_ID,
-                      au_ID:  newUser.au_ID,
-                      institution_ID: newUser.institution_ID,
-                      user_functions: savedFunctions.data,                                         
-                      functions: (savedFunctions.data !== undefined) ? savedFunctions.data.map(funct => {
-                        return funct.ors_function.ors_function;
-                      }).join(',') : []
-                    });  
-              dispatch(createUserSuccess(user)); //dispatch action
-              toastr.success('Success!!','The user detail is created');
-          });
-        })
-        .catch(error => {
-          throw(error);
-        });          
-      }
+        userService.login(username, password)
+            .then(
+                user => { 
+                    dispatch(success(user));
+                    history.push('/');
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
     };
+
+    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function logout() {
+    userService.logout();
+    return { type: userConstants.LOGOUT };
+}
+
+function register(user) {
+    return dispatch => {
+        dispatch(request(user));
+
+        userService.register(user)
+            .then(
+                user => { 
+                    dispatch(success());
+                    history.push('/login');
+                    dispatch(alertActions.success('Registration successful'));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
+    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
+}
+
+function getAll() {
+    return dispatch => {
+        dispatch(request());
+
+        userService.getAll()
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error.toString()))
+            );
+    };
+
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+// prefixed function name with underscore because delete is a reserved word in javascript
+function _delete(id) {
+    return dispatch => {
+        dispatch(request(id));
+
+        userService.delete(id)
+            .then(
+                user => dispatch(success(id)),
+                error => dispatch(failure(id, error.toString()))
+            );
+    };
+
+    function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
+    function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
+    function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
 }
