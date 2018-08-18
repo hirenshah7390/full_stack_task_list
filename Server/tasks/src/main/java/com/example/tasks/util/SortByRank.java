@@ -14,13 +14,13 @@ public class SortByRank implements Comparator<Task> {
         int priorityComparisonResult =
                 TaskPriority.comparePriorities(o1.getTaskPriority().toString(), o2.getTaskPriority().toString());
         if (priorityComparisonResult == 0) {
-            return compareTime(o1.getDueDate(), o2.getDueDate());
+            return compareInstance(o1.getDueDate(), o2.getDueDate());
         } else {
             return priorityComparisonResult;
         }
     }
 
-    private int compareTime(Instant d1, Instant d2) {
+    private int compareInstance(Instant d1, Instant d2) {
         Duration difference = Duration.between(d1, d2);
         if (difference.getSeconds() == 0) {
             return 0;
