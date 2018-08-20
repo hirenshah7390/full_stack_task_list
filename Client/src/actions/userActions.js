@@ -4,6 +4,7 @@ import { alertActions } from './alert.actions';
 import {browserHistory} from 'react-router';
 import { ACCESS_TOKEN } from '../constants';
 import {loadTasks} from './taskActions';
+import {toastr} from 'react-redux-toastr';
 
 export const userActions = {
     login,    
@@ -22,15 +23,13 @@ function login(username, password) {
                     dispatch(loadTasks());
                     browserHistory.push('/tasks');
                 },
-                error => {
-                    debugger;
+                error => {                   
                     if(error.status === 401) {
                         dispatch(failure('Your Username or Password is incorrect. Please try again!'));
-                    dispatch(alertActions.error('Your Username or Password is incorrect. Please try again!'));
-                                      
+                        toastr.error('Your Username or Password is incorrect. Please try again!');                                    
                     } else {
-                    dispatch(failure(error.message || 'Sorry! Something went wrong. Please try again!'));
-                    dispatch(alertActions.error(error.message || 'Sorry! Something went wrong. Please try again!'));                                        
+                        dispatch(failure(error.message || 'Sorry! Something went wrong. Please try again!'));
+                        toastr.error(error.message || 'Sorry! Something went wrong. Please try again!');                                       
                 }
             }
             );
