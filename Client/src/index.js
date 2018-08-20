@@ -5,13 +5,12 @@ import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
-import {loadTasks} from './actions/taskActions';
 import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ReduxToastr from 'react-redux-toastr';
 
 const store = configureStore();
-store.dispatch(loadTasks());
+//store.dispatch(loadTasks());
 
 render(
   <Provider store={store}>

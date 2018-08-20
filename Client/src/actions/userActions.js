@@ -3,6 +3,7 @@ import { login as serviceLogin, signup as serviceRegister } from '../utility/API
 import { alertActions } from './alert.actions';
 import {browserHistory} from 'react-router';
 import { ACCESS_TOKEN } from '../constants';
+import {loadTasks} from './taskActions';
 
 export const userActions = {
     login,    
@@ -18,6 +19,7 @@ function login(username, password) {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
                     localStorage.setItem('username',username)
                     dispatch(success(response));
+                    dispatch(loadTasks());
                     browserHistory.push('/tasks');
                 },
                 error => {
