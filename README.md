@@ -33,6 +33,12 @@ To start backend server Please follow below step
    
 The server will start on port 5000.
 
+I have created sample users. To login to the system bewlo are the credentials.
+
+username : hirentest
+
+password : hirentest
+
 The back-end app has mainly 2 Entity User and Task. User entity is coupled with spring security and JWT for tokens and authentication. It includes below endpoints.
     
    1. For Signup:- http://localhost:5000/api/auth/signup :- Register new user
