@@ -1,30 +1,36 @@
-import { userConstants } from '../constants';
-import { userService } from '../_services/user_service';
-import { alertActions } from './alertActions';
-import { history } from '../utility';
+import { userConstants } from './actionTypes';
+import { login as serviceLogin, signup as serviceRegister } from '../utility/APIUtils';
+import { alertActions } from './alert.actions';
+import {browserHistory} from 'react-router';
+import { ACCESS_TOKEN } from '../constants';
 
 export const userActions = {
-    login,
-    logout,
-    register,
-    getAll,
-    delete: _delete
+    login,    
+    register   
 };
 
 function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
-
-        userService.login(username, password)
+        serviceLogin(username, password)
             .then(
-                user => { 
-                    dispatch(success(user));
-                    history.push('/');
+                response => {                    
+                    localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                    localStorage.setItem('username',username)
+                    dispatch(success(response));
+                    browserHistory.push('/tasks');
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    debugger;
+                    if(error.status === 401) {
+                        dispatch(failure('Your Username or Password is incorrect. Please try again!'));
+                    dispatch(alertActions.error('Your Username or Password is incorrect. Please try again!'));
+                                      
+                    } else {
+                    dispatch(failure(error.message || 'Sorry! Something went wrong. Please try again!'));
+                    dispatch(alertActions.error(error.message || 'Sorry! Something went wrong. Please try again!'));                                        
                 }
+            }
             );
     };
 
@@ -33,20 +39,16 @@ function login(username, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
-function logout() {
-    userService.logout();
-    return { type: userConstants.LOGOUT };
-}
 
 function register(user) {
     return dispatch => {
         dispatch(request(user));
 
-        userService.register(user)
+        serviceRegister(user)
             .then(
                 user => { 
                     dispatch(success());
-                    history.push('/login');
+                    browserHistory.push('/login');
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
@@ -61,35 +63,3 @@ function register(user) {
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 
-function getAll() {
-    return dispatch => {
-        dispatch(request());
-
-        userService.getAll()
-            .then(
-                users => dispatch(success(users)),
-                error => dispatch(failure(error.toString()))
-            );
-    };
-
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
-}
-
-// prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
-    return dispatch => {
-        dispatch(request(id));
-
-        userService.delete(id)
-            .then(
-                user => dispatch(success(id)),
-                error => dispatch(failure(id, error.toString()))
-            );
-    };
-
-    function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
-}

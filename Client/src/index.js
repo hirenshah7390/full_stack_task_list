@@ -18,7 +18,7 @@ render(
     <div>
     <Router history={browserHistory} routes={routes} />
     <ReduxToastr
-      timeOut={2000}
+      timeOut={4000}
       newestOnTop={false}
       preventDuplicates
       position="top-left"

@@ -4,6 +4,7 @@ import {toastr} from 'react-redux-toastr';
 import * as helper from '../utility/helper';
 import {beginAjaxCall} from './ajaxStatusActions';
 import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import { debug } from 'util';
 
 const request = (options) => {
   const headers = new Headers({
@@ -44,12 +45,13 @@ export function loadTasks(page, size) {
 
   return function (dispatch) {
     dispatch(beginAjaxCall());
+    const username = localStorage.getItem('username');
+    debugger;
     return request({
-      url: API_BASE_URL + "/users/hirentest/userTasks?page=" + page + "&size=" + size,
+      url: API_BASE_URL + "/users/" +username+ "/userTasks?page=" + page + "&size=" + size,
       method: 'GET'
      })
-      .then(response => {  
-        debugger;                    
+      .then(response => {                            
           const result = response.content.map(task => {
               return Object.assign({},
                 {
