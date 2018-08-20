@@ -3,17 +3,9 @@ import {Link, IndexLink } from 'react-router';
 import LoadingDots from './LoadingDots';
 import './Header.css';
 
-const Header = ({loading, onLogOut}) => {  
+const Header = ({onLogOut}) => {  
   return (
-    <div>
-    <nav>
-      {/*<IndexLink to={"/"} activeClassName={"active"}>Home</IndexLink>
-      {"|"} */}
-      <Link to={"/Login"} activeClassName={"active"}>Login</Link>
-      {"|"}
-      <Link to={"/about"} activeClassName={"active"}>About</Link>
-      {loading && <LoadingDots interval={500} dots={20}/>}
-    </nav>
+    <div>    
     <div className="topnav-right">
           <input
           type={"submit"}         

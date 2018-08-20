@@ -24,8 +24,7 @@ class App extends React.Component{
   render() {
     return(
       <div className={"container-fluid"}>
-        <Header
-          loading={this.props.loading}
+        <Header         
           onLogOut={this.handleLogout}
         />
         {this.props.children}
