@@ -1,14 +1,32 @@
 import React, {PropTypes} from 'react';
 import Header from './common/Header';
 import {connect} from 'react-redux';
+import { ACCESS_TOKEN } from '../constants';
+import {browserHistory} from 'react-router';
 require('!style-loader!css-loader!react-redux-toastr/lib/css/react-redux-toastr.min.css');
 
 class App extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null,
+      isAuthenticated: false,
+      isLoading: false
+    }
+    this.handleLogout = this.handleLogout.bind(this);        
+  }
+
+  handleLogout() {
+    localStorage.removeItem(ACCESS_TOKEN);
+    browserHistory.push('/login');
+  }
+
   render() {
     return(
       <div className={"container-fluid"}>
         <Header
           loading={this.props.loading}
+          onLogOut={this.handleLogout}
         />
         {this.props.children}
       </div>
