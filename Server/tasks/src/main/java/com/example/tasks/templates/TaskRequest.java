@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 public class TaskRequest {
-    @NotBlank
-    @Size(max = 140)
+
+    private Long id;
     private String title;
     private TaskStatus taskStatus;
     private String description;
@@ -22,9 +22,17 @@ public class TaskRequest {
     private String feedback;
     private TaskPriority taskPriority;
     private Instant dueDate;
-    private TaskTemplate template;
+    private TaskTemplate taskTemplate;
     private Set<User> users;
     private int timeEstimated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -83,11 +91,11 @@ public class TaskRequest {
     }
 
     public TaskTemplate getTaskTemplate() {
-        return template;
+        return taskTemplate;
     }
 
-    public void setTaskTemplate(TaskTemplate template){
-        this.template = template;
+    public void setTaskTemplate(TaskTemplate taskTemplate){
+        this.taskTemplate = taskTemplate;
     }
 
     public Set<User> getUsers() {

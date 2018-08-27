@@ -21,7 +21,7 @@ public class TaskResponse {
     private Instant dueDate;
     private UserSummary createdBy;
     private Instant creationDateTime;
-    private TaskTemplate template;
+    private TaskTemplate taskTemplate;
     private Set<User> users;
     private int timeEstimated;
 
@@ -106,11 +106,11 @@ public class TaskResponse {
     }
 
     public TaskTemplate getTaskTemplate() {
-        return template;
+        return taskTemplate;
     }
 
-    public void setTaskTemplate(TaskTemplate template){
-        this.template = template;
+    public void setTaskTemplate(TaskTemplate taskTemplate){
+        this.taskTemplate = taskTemplate;
     }
 
     public Set<User> getUsers() {

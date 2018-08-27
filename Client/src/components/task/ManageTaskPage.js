@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as userActions from '../../actions/taskActions';
+import * as taskActions from '../../actions/taskActions';
 import TaskForm from './TaskForm';
 
 class ManageTaskPage extends React.Component {
@@ -52,12 +52,13 @@ class ManageTaskPage extends React.Component {
 
   saveTask(event){   
     event.preventDefault();
+
     if(!this.taskFormIsValid()){
       return;
-    }  
-    let task = Object.assign({}, this.state.task);
-              
-    this.props.userActions.saveUser(task)
+    } 
+    
+    let task = Object.assign({}, this.state.task);              
+    this.props.taskActions.saveTask(task)
         .then(() => this.redirect());
   }
 
@@ -79,7 +80,7 @@ class ManageTaskPage extends React.Component {
 
 ManageTaskPage.propTypes = {
   task: PropTypes.object.isRequired,  
-  userActions: PropTypes.object.isRequired
+  taskActions: PropTypes.object.isRequired
   };
 
 ManageTaskPage.contextTypes = {
@@ -112,7 +113,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(userActions, dispatch)    
+    taskActions: bindActionCreators(taskActions, dispatch)    
   };
 }
 

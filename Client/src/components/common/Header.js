@@ -18,7 +18,7 @@ const Header = ({onLogOut}) => {
 };
 
 Header.propTypes = {
-  loading: PropTypes.bool.isRequired
+  onLogOut: PropTypes.func.isRequired
 };
 
 export default Header;

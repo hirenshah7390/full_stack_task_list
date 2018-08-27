@@ -93,7 +93,7 @@ public class TaskService {
         return new PagedResponse<>(taskResponses, usertaskIds.getNumber(), usertaskIds.getSize(), usertaskIds.getTotalElements(), usertaskIds.getTotalPages(), usertaskIds.isLast());
     }
 
-    public TaskResponse getTaskById(Long taskId, UserPrincipal currentUser) {
+    public TaskResponse getTaskById(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new ResourceNotFoundException("Task", "id", taskId));
       // if(task.getUsers().contains(currentUser) && currentUser.getAuthorities().contains())
@@ -106,7 +106,7 @@ public class TaskService {
         TaskTemplate taskTemplate = taskTemplateRepository.findById(taskRequest.getTaskTemplate().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("TaskTemplate", "id", taskRequest.getTaskTemplate().getId()));
 
-        Task task = new Task();
+        Task task = taskRepository.findById(taskRequest.getId()).orElse(new Task());
 
         Instant now = Instant.now();
         Instant timeEstimatedFinish = taskRequest.getDueDate();

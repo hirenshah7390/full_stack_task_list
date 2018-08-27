@@ -21,7 +21,7 @@ public class ModelMapper {
         TaskResponse.setTaskStatus(task.getTaskStatus());
         TaskResponse.setTaskPriority(task.getTaskPriority());
         TaskResponse.setUsers(task.getUsers());
-
+       // TaskResponse.setTaskTemplate(task.getTaskTemplate());
         return TaskResponse;
     }
 

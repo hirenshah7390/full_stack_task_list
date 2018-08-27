@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +34,7 @@ public class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @PostMapping
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest taskRequest) {
         TaskTemplate taskTemplate = taskService.createTask(taskRequest);
 
@@ -46,9 +48,8 @@ public class TaskController {
 
 
     @GetMapping("TaskTemplate/Task/{taskId}")
-    public TaskResponse getTaskById(@CurrentUser UserPrincipal currentUser,
-                                    @PathVariable Long taskId) {
-        return taskService.getTaskById(taskId, currentUser);
+    public TaskResponse getTaskById(@PathVariable Long taskId) {
+        return taskService.getTaskById(taskId);
     }
 
 }

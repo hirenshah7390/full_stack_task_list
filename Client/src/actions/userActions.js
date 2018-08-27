@@ -1,5 +1,5 @@
 import { userConstants } from './actionTypes';
-import { login as serviceLogin, signup as serviceRegister } from '../utility/APIUtils';
+import { login as serviceLogin, signup as serviceRegister, getCurrentUser as currentUser } from '../utility/APIUtils';
 import { alertActions } from './alert.actions';
 import {browserHistory} from 'react-router';
 import { ACCESS_TOKEN } from '../constants';
@@ -18,7 +18,8 @@ function login(username, password) {
             .then(
                 response => {                    
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                    localStorage.setItem('username',username)
+                    localStorage.setItem('username',username);
+                    currentUser().then(user => localStorage.setItem('currentUser', user));                   
                     dispatch(success(response));
                     dispatch(loadTasks());
                     browserHistory.push('/tasks');
@@ -32,7 +33,7 @@ function login(username, password) {
                         toastr.error(error.message || 'Sorry! Something went wrong. Please try again!');                                       
                 }
             }
-            );
+            );            
     };
 
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }

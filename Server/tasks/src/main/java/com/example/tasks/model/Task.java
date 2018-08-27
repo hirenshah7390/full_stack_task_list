@@ -53,10 +53,10 @@ public class Task extends UserDateAudit{
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
-    @NotNull
+    //@NotNull
     private int timeEstimated;
 
-    @NotNull
+   // @NotNull
     private Instant dueDate;
 
     private boolean isRecurring;

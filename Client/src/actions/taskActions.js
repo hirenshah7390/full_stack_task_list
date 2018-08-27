@@ -3,15 +3,17 @@ import fetch from 'node-fetch';
 import {toastr} from 'react-redux-toastr';
 import * as helper from '../utility/helper';
 import {beginAjaxCall} from './ajaxStatusActions';
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
-import { debug } from 'util';
+import { API_BASE_URL, TASK_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
+  debugger;
   const headers = new Headers({
       'Content-Type': 'application/json',
   });  
  
-  headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);  
+  if(localStorage.getItem(ACCESS_TOKEN)) {
+  headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN));  
+  }
 
   const defaults = {headers: headers};
   options = Object.assign({}, defaults, options);  
@@ -41,14 +43,13 @@ export function updateTaskSuccess(task) {
 export function loadTasks(page, size) { 
 
     page = page || 0;
-    size = size || POLL_LIST_SIZE;
+    size = size || TASK_LIST_SIZE;
 
   return function (dispatch) {
     dispatch(beginAjaxCall());
-    const username = localStorage.getItem('username');
-    debugger;
+    const username = localStorage.getItem('username');    
     return request({
-      url: API_BASE_URL + "/users/" +username+ "/userTasks?page=" + page + "&size=" + size,
+      url: API_BASE_URL + "/users/" +username+ "/tasks?page=" + page + "&size=" + size,
       method: 'GET'
      })
       .then(response => {                            
@@ -71,38 +72,40 @@ export function loadTasks(page, size) {
 }
 
 export function saveTask(task_ori) {
+ let currentUser = localStorage.getItem('currentUser') ;
 let task = Object.assign({},
     {
-      task_ID : task_ori.task_ID,
-      first_name: task_ori.first_name,
-      last_name: task_ori.last_name,
-      email: task_ori.email,
-    
+      id : task_ori.id,
+      title : task_ori.title,                  
+      taskStatus : task_ori.taskStatus,
+      taskPriority : task_ori.taskPriority,
+      dueDate : task_ori.dueDate,
+      taskTemplate : task_ori.taskTemplate,
+      users:[{
+        id:currentUser.id
+      }]     
     });  
   
  return function (dispatch, getState) {    
    dispatch(beginAjaxCall());
-   if (task_ori.task_ID > 0) {  
+   if (task_ori.id > 0) {  
       
      //save task   
-      return fetch('http://localhost:5000/ors/v1/task', {
-                      method: 'put',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(task)
-            })
+     return request({
+      url: API_BASE_URL + "/tasks",
+      method: 'POST',
+      body : JSON.stringify(task)
+     })
           .then(response => response.json())
           .then(savedtask => { 
            //create new task object         
           let task = Object.assign({},
             {
-              task_ID : savedtask.data.task_ID,
-              first_name: savedtask.data.first_name,
-              last_name: savedtask.data.last_name,
-              email: savedtask.data.email            
-             
+              id : savedtask.id,
+              title : savedtask.title,                  
+              taskStatus : savedtask.taskStatus,
+              taskPriority : savedtask.taskPriority,
+              dueDate : savedtask.dueDate             
             });
             
             dispatch(updateTaskSuccess(task)); //dispatch action
@@ -114,24 +117,22 @@ let task = Object.assign({},
   else {
         let newtask = {};       
         //save tasks
-        return fetch('http://localhost:5000/ors/v1/tasks', {
-                      method: 'post',
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(task)
-                    })
+        return request({
+          url: API_BASE_URL + "/tasks",
+          method: 'POST',
+          body : JSON.stringify(task)
+         })
         .then(response => response.json())
         .then(savedtask => {
               newtask = savedtask.data;
              
                 let task = Object.assign({},
                     {
-                      task_ID : newtask.task_ID,
-                      first_name: newtask.first_name,
-                      last_name: newtask.last_name,
-                      email: newtask.email                 
+                      id : newtask.id,
+                      title : newtask.title,                  
+                      taskStatus : newtask.taskStatus,
+                      taskPriority : newtask.taskPriority,
+                      dueDate : newtask.dueDate                    
                      
                     });  
               dispatch(createTaskSuccess(task)); //dispatch action
