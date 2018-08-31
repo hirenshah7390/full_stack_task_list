@@ -4,7 +4,7 @@ import com.example.tasks.model.Task;
 
 import java.util.List;
 
-public class TemplateTaskResponse {
+public class TaskTemplateResponse {
     private String title;
     private String defaultDescription;
     private List<Task> tasks;

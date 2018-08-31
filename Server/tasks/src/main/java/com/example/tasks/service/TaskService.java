@@ -41,28 +41,6 @@ public class TaskService {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
-    public PagedResponse<TaskResponse> getTasksCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
-        validatePageNumberAndSize(page, size);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
-
-        // Retrieve all polls created by the given username
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-        Page<Task> polls = taskRepository.findByCreatedBy(user.getId(), pageable);
-
-        if (polls.getNumberOfElements() == 0) {
-            return new PagedResponse<>(Collections.emptyList(), polls.getNumber(),
-                    polls.getSize(), polls.getTotalElements(), polls.getTotalPages(), polls.isLast());
-        }
-
-        List<TaskResponse> pollResponses = polls.map(task -> {
-            return ModelMapper.mapTaskToTaskResponse(task);
-        }).getContent();
-
-        return new PagedResponse<>(pollResponses, polls.getNumber(),
-                polls.getSize(), polls.getTotalElements(), polls.getTotalPages(), polls.isLast());
-    }
 
     public PagedResponse<TaskResponse> getTasksByUsers(String username, UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
@@ -84,7 +62,7 @@ public class TaskService {
 
         Sort sort = new Sort(Sort.Direction.DESC, "createdAt");
         List<Task> tasks = taskRepository.findByIdIn(taskIds, sort);
-        tasks.sort(Comparator.comparing(Task::getTaskStatus));
+        //tasks.sort(Comparator.comparing(Task::getTaskStatus));
         tasks = sortTaskByRank(tasks);
 
         List<TaskResponse> taskResponses = tasks.stream().map(task -> ModelMapper.mapTaskToTaskResponse(task)).collect(Collectors.toList());
@@ -101,11 +79,7 @@ public class TaskService {
         return ModelMapper.mapTaskToTaskResponse(task);
     }
 
-    public TaskTemplate createTask(TaskRequest taskRequest) {
-
-        TaskTemplate taskTemplate = taskTemplateRepository.findById(taskRequest.getTaskTemplate().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("TaskTemplate", "id", taskRequest.getTaskTemplate().getId()));
-
+    public Task createTask(TaskRequest taskRequest) {
         Task task = taskRepository.findById(taskRequest.getId()).orElse(new Task());
 
         Instant now = Instant.now();
@@ -121,10 +95,20 @@ public class TaskService {
         task.setTimeEstimated(timeToFinish);
         Set<User> users = taskRequest.getUsers();
         task.setUsers(users);
+        task.setTaskTemplate(taskRequest.getTaskTemplate());
+        task.setIsRecurring(taskRequest.getIsRecurring());
+        task.setRecurringPeriod(taskRequest.getRecurringPeriod());
+        task.setStopDate(taskRequest.getStopDate());
 
-       taskTemplate.addTasks(task);
+        return taskRepository.save(task);
+    }
 
+    public TaskTemplate createTaskTemplate(TaskTemplate taskTemplate) {
         return taskTemplateRepository.save(taskTemplate);
+    }
+
+    public List<TaskTemplate> getTaskTemplate(){
+        return taskTemplateRepository.findAll();
     }
 
     private void validatePageNumberAndSize(int page, int size) {
@@ -138,8 +122,7 @@ public class TaskService {
     }
 
     public List<Task> sortTaskByRank(List<Task> tasks) {
-        tasks.sort(new SortByRank());
+        tasks.sort(Comparator.comparing(Task::getTaskStatus).thenComparing(new SortByRank()));
         return tasks;
     }
-
 }

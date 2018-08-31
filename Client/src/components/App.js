@@ -3,6 +3,7 @@ import Header from './common/Header';
 import {connect} from 'react-redux';
 import { ACCESS_TOKEN } from '../constants';
 import {browserHistory} from 'react-router';
+import {toastr} from 'react-redux-toastr';
 require('!style-loader!css-loader!react-redux-toastr/lib/css/react-redux-toastr.min.css');
 
 class App extends React.Component{
@@ -19,6 +20,7 @@ class App extends React.Component{
   handleLogout() {
     localStorage.removeItem(ACCESS_TOKEN);
     browserHistory.push('/login');
+    toastr.success('Successfully Logout!!'); 
   }
 
   render() {

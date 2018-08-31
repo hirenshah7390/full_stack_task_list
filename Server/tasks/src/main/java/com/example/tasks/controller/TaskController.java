@@ -36,18 +36,17 @@ public class TaskController {
     @PostMapping
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createTask(@Valid @RequestBody TaskRequest taskRequest) {
-        TaskTemplate taskTemplate = taskService.createTask(taskRequest);
+        Task task = taskService.createTask(taskRequest);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{taskTemplateId}")
-                .buildAndExpand(taskTemplate.getId()).toUri();
+                .fromCurrentRequest().path("/{taskId}")
+                .buildAndExpand(task.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Task Created Successfully"));
+                .body(new ApiResponse(true, task.getId().toString()));
     }
 
-
-    @GetMapping("TaskTemplate/Task/{taskId}")
+    @GetMapping("{taskId}")
     public TaskResponse getTaskById(@PathVariable Long taskId) {
         return taskService.getTaskById(taskId);
     }

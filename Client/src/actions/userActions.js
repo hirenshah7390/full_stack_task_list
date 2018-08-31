@@ -5,6 +5,7 @@ import {browserHistory} from 'react-router';
 import { ACCESS_TOKEN } from '../constants';
 import {loadTasks} from './taskActions';
 import {toastr} from 'react-redux-toastr';
+import {loadTaskTemplates} from "./taskTemplateActions";
 
 export const userActions = {
     login,    
@@ -18,11 +19,14 @@ function login(username, password) {
             .then(
                 response => {                    
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                    localStorage.setItem('username',username);
-                    currentUser().then(user => localStorage.setItem('currentUser', user));                   
+                    localStorage.setItem('username',username);                    
+                    currentUser().then(user => {localStorage.setItem('currentUser', JSON.stringify(user))
+                    });                   
                     dispatch(success(response));
-                    dispatch(loadTasks());
+                    dispatch(loadTaskTemplates());
+                    dispatch(loadTasks());                   
                     browserHistory.push('/tasks');
+                    toastr.success('Successfully Login!!'); 
                 },
                 error => {                   
                     if(error.status === 401) {

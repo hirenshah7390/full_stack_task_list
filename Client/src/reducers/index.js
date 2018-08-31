@@ -1,5 +1,6 @@
 import {combineReducers} from  'redux';
 import tasks from './taskReducer';
+import taskTemplates from './taskTemplateReducer'
 import ajaxCallsInProgress from './ajaxStatusReducer';
 import {reducer as toastrReducer} from 'react-redux-toastr';
 import  authentication  from './authenticationReducer';
@@ -8,6 +9,7 @@ import { alert } from './alert.reducer';
 
 const rootReducer = combineReducers({
   tasks,
+  taskTemplates,
   authentication,
   registration,
   alert,

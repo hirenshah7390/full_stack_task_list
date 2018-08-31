@@ -1,5 +1,7 @@
 package com.example.tasks.model;
 import com.example.tasks.model.audit.UserDateAudit;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -43,8 +45,9 @@ public class Task extends UserDateAudit{
     @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "template_id", referencedColumnName="id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
     private TaskTemplate taskTemplate;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -61,8 +64,9 @@ public class Task extends UserDateAudit{
 
     private boolean isRecurring;
 
+    private Instant stopDate;
+
     @Enumerated(EnumType.STRING)
-    @Column(length = 60)
     private RecurringPeriod recurringPeriod;
 
     public Long getId() {
@@ -135,6 +139,14 @@ public class Task extends UserDateAudit{
 
     public void setIsRecurring(boolean isRecurring) {
         this.isRecurring = isRecurring;
+    }
+
+    public Instant getStopDate() {
+        return stopDate;
+    }
+
+    public void setStopDate(Instant stopDate) {
+        this.stopDate = stopDate;
     }
 
     public RecurringPeriod getRecurringPeriod() {

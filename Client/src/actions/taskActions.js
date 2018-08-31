@@ -5,8 +5,7 @@ import * as helper from '../utility/helper';
 import {beginAjaxCall} from './ajaxStatusActions';
 import { API_BASE_URL, TASK_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
-const request = (options) => {
-  debugger;
+const request = (options) => {  
   const headers = new Headers({
       'Content-Type': 'application/json',
   });  
@@ -54,13 +53,22 @@ export function loadTasks(page, size) {
      })
       .then(response => {                            
           const result = response.content.map(task => {
+            debugger;
               return Object.assign({},
                 {
                   id : task.id,
-                  title : task.title,                  
-                  taskStatus : task.taskStatus,
-                  taskPriority : task.taskPriority,
-                  dueDate : task.dueDate             
+                  title : task.title,    
+                  taskTemplateId: task.taskTemplate.id, 
+                  taskTemplateDescription : task.taskTemplate.defaultDescription,             
+                  taskStatus : task.taskStatus == 'PENDING' ? 1 : task.taskStatus == 'IN_PROGRESS' ? 2 : task.taskStatus == 'FINISHED' ? 3 : null,
+                  taskStatusText: task.taskStatus,
+                  taskPriorityText: task.taskPriority,
+                  taskPriority : task.taskPriority == 'LOW' ? 1 : task.taskPriority == 'MEDIUM' ? 2 : task.taskPriority == 'hiGH' ? 3 : null,
+                  dueDate : task.dueDate,
+                  isRecurring : task.isRecurring,
+                  recurringPeriod : task.recurringPeriod == 'WEEKLY' ? 1 : task.recurringPeriod == 'MONTHLY' ? 2 : null,                  
+                  stopDate : task.stopDate, 
+                  userId : task.users[0].id           
               });
           }); 
           
@@ -72,70 +80,55 @@ export function loadTasks(page, size) {
 }
 
 export function saveTask(task_ori) {
- let currentUser = localStorage.getItem('currentUser') ;
-let task = Object.assign({},
+  
+ let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+ let task = Object.assign({},
     {
       id : task_ori.id,
       title : task_ori.title,                  
-      taskStatus : task_ori.taskStatus,
-      taskPriority : task_ori.taskPriority,
+      taskStatus : task_ori.taskStatus == 1 ? 'PENDING'  : task_ori.taskStatus == 2 ? 'IN_PROGRESS' : task_ori.taskStatus == 3 ? 'FINISHED' : null,
+      taskPriority : task_ori.taskPriority == 1 ? 'LOW'  : task_ori.taskPriority == 2 ? 'MEDIUM' : task_ori.taskPriority == 3 ? 'HIGH' : null,
+      taskStatusText: task_ori.taskStatusText,
+      taskPriorityText: task_ori.taskPriorityText,
       dueDate : task_ori.dueDate,
-      taskTemplate : task_ori.taskTemplate,
+      isRecurring : task_ori.isRecurring,
+      stopDate : task_ori.stopDate,
+      recurringPeriod : task_ori.recurringPeriod == 1 ? 'WEEKLY' :  task_ori.recurringPeriod == 2 ? 'MONTHLY' : null, 
+      taskTemplate : {
+        id : task_ori.taskTemplateId
+      },
       users:[{
-        id:currentUser.id
+        id:task_ori.userId
       }]     
-    });  
-  
+    });    
  return function (dispatch, getState) {    
    dispatch(beginAjaxCall());
-   if (task_ori.id > 0) {  
-      
+   if (task_ori.id > 0) {        
      //save task   
      return request({
       url: API_BASE_URL + "/tasks",
       method: 'POST',
       body : JSON.stringify(task)
-     })
-          .then(response => response.json())
-          .then(savedtask => { 
-           //create new task object         
-          let task = Object.assign({},
-            {
-              id : savedtask.id,
-              title : savedtask.title,                  
-              taskStatus : savedtask.taskStatus,
-              taskPriority : savedtask.taskPriority,
-              dueDate : savedtask.dueDate             
-            });
-            
+     })         
+    .then(response => {          
             dispatch(updateTaskSuccess(task)); //dispatch action
             toastr.success('Success!!','The task detail is updated');           
         }).catch(error => {
           throw(error);
         });
       }
-  else {
-        let newtask = {};       
+  else {               
         //save tasks
         return request({
           url: API_BASE_URL + "/tasks",
           method: 'POST',
           body : JSON.stringify(task)
-         })
-        .then(response => response.json())
-        .then(savedtask => {
-              newtask = savedtask.data;
-             
-                let task = Object.assign({},
-                    {
-                      id : newtask.id,
-                      title : newtask.title,                  
-                      taskStatus : newtask.taskStatus,
-                      taskPriority : newtask.taskPriority,
-                      dueDate : newtask.dueDate                    
-                     
-                    });  
+         })       
+        .then(response => {                         
+              let task = Object.assign({}, task_ori);
+              task["id"] = response.message;
               dispatch(createTaskSuccess(task)); //dispatch action
+              dispatch(loadTasks());
               toastr.success('Success!!','The task detail is created');          
         })
         .catch(error => {

@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -41,6 +42,15 @@ public class UserController {
         return userSummary;
     }
 
+   /* @GetMapping("/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UserSummary> getUsers(Role role) {
+        List<User> users = userRepository.usersByRoleId(role.getId());
+
+        List<UserSummary> userSummary = users.stream().map(user -> new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getRoles())).collect(Collectors.toList());
+        return userSummary;
+    }
+*/
     @GetMapping("/user/checkUsernameAvailability")
     public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
         Boolean isAvailable = !userRepository.existsByUsername(username);
@@ -64,15 +74,6 @@ public class UserController {
 
         return userProfile;
     }
-
-   /* @GetMapping("/users/{username}/tasks")
-    public PagedResponse<TaskResponse> getTasksCreatedBy(@PathVariable(value = "username") String username,
-                                                         @CurrentUser UserPrincipal currentUser,
-                                                         @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return taskService.getTaskCreatedBy(username, currentUser, page, size);
-    } */
-
 
     @GetMapping("/users/{username}/tasks")
     public PagedResponse<TaskResponse> getTasksByUser(@PathVariable(value = "username") String username,

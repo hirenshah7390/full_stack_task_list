@@ -3,7 +3,8 @@ import {Link} from 'react-router';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-const TaskList = ({tasks}) => {    
+const TaskList = ({tasks}) => {   
+  
   return (
     <ReactTable
       data={tasks}
@@ -20,13 +21,13 @@ const TaskList = ({tasks}) => {
         },
         {
           Header: "Status",
-          accessor: "taskStatus",
-          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskStatus}</Link>) // Custom cell components!
+          accessor: "taskStatusText",
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskStatusText}</Link>) // Custom cell components!
         },
         {
           Header: "Priority",
-          accessor: "taskPriority",
-          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskPriority}</Link>) // Custom cell components!
+          accessor: "taskPriorityText",
+          Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.taskPriorityText}</Link>) // Custom cell components!
         },
         {
           Header: "Due at",
@@ -34,16 +35,7 @@ const TaskList = ({tasks}) => {
           Cell: cellInfo => (<Link to={'/task/' + cellInfo.row.id}>{cellInfo.row.dueDate}</Link>) // Custom cell components!
         }
       ]}
-      defaultSorted={[
-        {
-          id: "taskStatus",
-          desc: false
-        },
-        {
-          id: "title",
-          desc: false
-        }
-      ]}
+      
       defaultPageSize={20}
       className="-striped -highlight"
     />

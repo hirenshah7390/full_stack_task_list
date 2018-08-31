@@ -25,9 +25,9 @@ public class SortByRank implements Comparator<Task> {
         if (difference.getSeconds() == 0) {
             return 0;
         } else if (difference.getSeconds() > 0) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 }

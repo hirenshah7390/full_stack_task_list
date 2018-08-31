@@ -7,7 +7,6 @@ import TaskPage from './components/task/TaskPage';
 import ManageTaskPage from './components/task/ManageTaskPage';
 import LoginPage from './LoginPage/LoginPage';
 import RegisterPage from './RegisterPage/RegisterPage';
-import { PrivateRoute } from './components/PrivateRoute';
 
 export default (
         <Route path={"/"} component={App}>
@@ -16,9 +15,6 @@ export default (
          <Route path={"register"} component={RegisterPage} />
          <Route path="tasks" component={TaskPage} />
          <Route path="task(/:id)" component={ManageTaskPage} />
-         {/* <Route path={"tasks"} component={TaskPage} />
-         <Route path="task(/:id)" component={ManageTaskPage} /> */}
-
          <Route path={"about"} component={AboutPage} />
         </Route>
   );

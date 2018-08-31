@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-public class TemplateTaskRequest {
+public class TaskTemplateRequest {
     private String title;
     private String defaultDescription;
     private List<Task> tasks;

@@ -8,16 +8,24 @@ import routes from './routes';
 import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ReduxToastr from 'react-redux-toastr';
+import {ACCESS_TOKEN } from './constants';
+import {loadTasks} from './actions/taskActions';
+import {loadTaskTemplates} from "./actions/taskTemplateActions";
 
 const store = configureStore();
-//store.dispatch(loadTasks());
+
+if(localStorage.getItem(ACCESS_TOKEN))
+{
+ store.dispatch(loadTasks());
+ store.dispatch(loadTaskTemplates());
+}
 
 render(
   <Provider store={store}>
     <div>
     <Router history={browserHistory} routes={routes} />
     <ReduxToastr
-      timeOut={4000}
+      timeOut={5000}
       newestOnTop={false}
       preventDuplicates
       position="top-left"

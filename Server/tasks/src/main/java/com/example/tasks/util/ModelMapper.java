@@ -21,7 +21,11 @@ public class ModelMapper {
         TaskResponse.setTaskStatus(task.getTaskStatus());
         TaskResponse.setTaskPriority(task.getTaskPriority());
         TaskResponse.setUsers(task.getUsers());
-       // TaskResponse.setTaskTemplate(task.getTaskTemplate());
+        TaskResponse.setTaskTemplate(task.getTaskTemplate());
+        TaskResponse.setTimeEstimated(task.getTimeEstimated());
+        TaskResponse.setIsRecurring(task.getIsRecurring());
+        TaskResponse.setStopDate(task.getStopDate());
+        TaskResponse.setRecurringPeriod(task.getRecurringPeriod());
         return TaskResponse;
     }
 

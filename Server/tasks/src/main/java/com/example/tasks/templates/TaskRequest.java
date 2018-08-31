@@ -25,6 +25,9 @@ public class TaskRequest {
     private TaskTemplate taskTemplate;
     private Set<User> users;
     private int timeEstimated;
+    private boolean isRecurring;
+    private Instant stopDate;
+    private RecurringPeriod recurringPeriod;
 
     public Long getId() {
         return id;
@@ -109,6 +112,30 @@ public class TaskRequest {
     public int getTimeEstimated(){return timeEstimated;}
 
     public void setTimeEstimated(int timeEstimated) {this.timeEstimated = timeEstimated;}
+
+    public Instant getStopDate() {
+        return stopDate;
+    }
+
+    public void setStopDate(Instant stopDate) {
+        this.stopDate = stopDate;
+    }
+
+    public RecurringPeriod getRecurringPeriod() {
+        return recurringPeriod;
+    }
+
+    public void setRecurringPeriod(RecurringPeriod recurringPeriod) {
+        this.recurringPeriod = recurringPeriod;
+    }
+
+    public boolean getIsRecurring() {
+        return isRecurring;
+    }
+
+    public void setIsRecurring(boolean isRecurring) {
+        this.isRecurring = isRecurring;
+    }
 
 
 }
